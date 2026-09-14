@@ -1,5 +1,5 @@
 import {UsuarioRepository} from "../repositories/usuarioRepository";
-import {UsuarioAttributes} from "../models/Usuario";
+import {Usuario, UsuarioAttributes} from "../models/Usuario";
 
 export class UsuarioService {
     private usuarioRepository : UsuarioRepository;
@@ -27,6 +27,18 @@ export class UsuarioService {
 
     async deleteUsuario(id: number) {
         const result = await this.usuarioRepository.delete(id);
+        if (!result) {
+            throw  new Error("Não foi possivel excluir o usuario com id:" + id);
+        }
         return result;
+    }
+
+    async updateUsuario(id: number, usuarioData: Partial<UsuarioAttributes>): Promise<Usuario | null> {
+        const currentUser = await this.usuarioRepository.update(id, usuarioData);
+        if (currentUser == null) {
+            throw new Error("Não foi possivel atualizar o usuario id:" + id);
+        }
+        return currentUser
+
     }
 }

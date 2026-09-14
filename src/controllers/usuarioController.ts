@@ -43,11 +43,24 @@ export class UsuarioController {
         }
     }
 
-    update(req: Request, res: Response): Response {
-        return res.status(201).json();
+    async update(req: Request, res: Response): Promise<Response> {
+        try {
+            const id = Number(req.params.id);
+            const { nome } = req.body
+            const atualiza = await this.usuarioService.updateUsuario(id, {nome});
+            return res.status(200).json(atualiza);
+        } catch (error) {
+            return res.status(400).json({message: (error as Error).message});
+        }
     }
 
-    delete(req: Request, res: Response): Response {
-        return res.status(201).json();
+    async delete(req: Request, res: Response): Promise<Response> {
+        try {
+            const id = Number(req.params.id);
+            const exclui = await this.usuarioService.deleteUsuario(id);
+            return res.status(204).json(exclui);
+        } catch (error) {
+            return res.status(400).json({message: (error as Error).message});
+        }
     }
 }
