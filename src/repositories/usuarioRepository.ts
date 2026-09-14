@@ -6,7 +6,7 @@ export class UsuarioRepository {
     }
 
     async findById(id: number): Promise<Usuario | null> {
-        return await Usuario.findOne();
+        return await Usuario.findOne({where: {id}});
     }
 
     async create(usuarioData: Omit<UsuarioAttributes, "id">): Promise<Usuario> {
